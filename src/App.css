@@ -1,3 +1,10 @@
+*{
+  box-sizing: border-box;
+}
+body{
+  margin-left: 35%;
+  margin-right: 35;
+}
 .App {
   text-align: center;
 }
@@ -12,7 +19,9 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+/* .divCon{
 
+} */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

@@ -43,7 +43,7 @@ console.log("react Data render",this.state.reactDat);
 
   render() {
     return (
-      <div>
+      <div className="divCon">
         <Form onSubmit={this.callData}>
      <Form.Group className="mb-3" controlId="formBasicPassword">
     <Form.Label>Password</Form.Label>
