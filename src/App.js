@@ -1,64 +1,45 @@
-import axios from 'axios'
+import axios from 'axios';
 import React from 'react'
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button,Form } from 'react-bootstrap'
-import Wether from './Component/Wether'
-// import axios from 'axios'
+class App extends React.Component {
 
-export class App extends React.Component {
-constructor(props){
- super(props)
-  this.state= 
-    {reactDat:{},
-    cardDisplay:false,
-    inputCity:''
-   
-}
-}
-callData=async(event)=>{
-  event.preventDefault()
+  constructor(props) {
+    super(props);
+    this.state = {
+      pokeName: '',
+      pokeInfo: {}
+    }
+  }
 
+  getPokeData = async (e) =>{
+    e.preventDefault();
+    console.log(e.target.poke.value)
+    await this.setState({
+      pokeName:e.target.poke.value
+    })
+    // http://localhost:3001/getDataFromPoke?pokeName=pidgey
+    //http://localhost:3001/getDataFromPoke?pokeName=bulbasaur
+    // localhost:3001/getDataFromPoke?pokeName=bulbasaur
+    // let pokeDataResult = await axios.get(`${process.env.REACT_APP_SERVER_LINK}/getDataFromPoke?pokeName=${this.state.pokeName}`)
+    let pokeDataResult= await axios.get(`${process.env.REACT_APP_SERVER_LINK}getDataFromPoke?pokeName=${this.state.pokeName}`)
 
- await this.setState({
-    inputCity:event.target.cityName.value
-  })
-  console.log(process.env.REACT_APP_IP_KEY,"personal b b key");
- let urlLocation= `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_IP_KEY}&q=${this.state.inputCity}&format=json`
-
-
-
-let getUrlData=await axios.get(urlLocation );
-console.log("url location",getUrlData.data);
- console.log("url location[0]",getUrlData.data[0]);
-console.log(getUrlData);
-this.setState({
-  reactDat:getUrlData.data[0],
-  cardDisplay:true
-})
-
-console.log("react Data render",this.state.reactDat);
-   
-}
+    console.log('kkkkkkkkk',pokeDataResult.data)
+    await this.setState({
+      pokeInfo: pokeDataResult.data
+    })
+    console.log(this.state.pokeInfo);
+  }
 
   render() {
     return (
-      <div className="divCon">
-        <Form onSubmit={this.callData}>
-     <Form.Group className="mb-3" controlId="formBasicPassword">
-    <Form.Label>Password</Form.Label>
-    <Form.Control type="text" placeholder="type city name" name="cityName" />
-  </Form.Group>
-  <Button variant="primary" type="submit">
-    Submit
-  </Button>
-</Form>   
- {/* <Button variant="primary">Go somewhere</Button> */}
-
-
-
-     {this.state.cardDisplay &&
-       <Wether dataCall={this.state.reactDat}/>  }
+      <div>
+        <h2>Pokemon App</h2>
+        <form onSubmit={this.getPokeData}>
+          <input type="text" name='poke' />
+          <button> Get Poke Data</button>
+        </form>
+        <p>{this.state.pokeInfo.name}</p>
+        <p>{this.state.pokeInfo.url}</p>
       </div>
     )
   }
